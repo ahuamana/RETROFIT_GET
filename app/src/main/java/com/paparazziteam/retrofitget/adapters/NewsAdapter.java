@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.paparazziteam.retrofitget.R;
 import com.paparazziteam.retrofitget.model.News;
 
@@ -39,9 +41,17 @@ public class NewsAdapter  extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
         News noticiaobjeto = mNewsModel.get(position);
 
+
+
         //binding
         holder.txttitulo.setText(noticiaobjeto.getTitle());
 
+
+        //binding image
+        Glide.with(context)
+                .load(noticiaobjeto.getImage())
+                .placeholder(R.drawable.ic_launcher_background)
+                .into(holder.roundedImageView);
 
     }
 
@@ -54,12 +64,15 @@ public class NewsAdapter  extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
         TextView txttitulo;
         Button btnprueba;
+        RoundedImageView roundedImageView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             txttitulo = itemView.findViewById(R.id.txtTitulo);
             btnprueba = itemView.findViewById(R.id.btnPrueba);
+            roundedImageView = itemView.findViewById(R.id.roundedImageView);
+
 
 
         }

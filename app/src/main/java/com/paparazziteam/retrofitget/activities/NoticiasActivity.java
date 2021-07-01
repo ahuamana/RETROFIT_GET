@@ -69,16 +69,16 @@ public class NoticiasActivity extends AppCompatActivity {
 
                 Log.e("data ", "" + response.body().getSources());
 
-                List<News> news= response.body().getSources();
+                List<News> news= response.body().getSources(); // guarda todos los objetos en la clase
 
                 mAdapter = new NewsAdapter(news, getApplicationContext());//Creo el adapter con los datos requeridos
                 recyclerView.setAdapter(mAdapter);
 
-                for(News noticias: news)
-                {
-                    Log.e("title: ",""+ noticias.getTitle());
-
-                }
+//                for(News noticias: news)
+//                {
+//                    Log.e("title: ",""+ noticias.getTitle());
+//
+//                }
 
 
             }
