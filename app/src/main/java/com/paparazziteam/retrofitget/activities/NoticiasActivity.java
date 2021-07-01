@@ -1,11 +1,15 @@
 package com.paparazziteam.retrofitget.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.LinearLayout;
 
 import com.paparazziteam.retrofitget.R;
+import com.paparazziteam.retrofitget.adapters.NewsAdapter;
 import com.paparazziteam.retrofitget.interfaces.NewsInterface;
 import com.paparazziteam.retrofitget.model.News;
 import com.paparazziteam.retrofitget.model.NewsParent;
@@ -20,10 +24,21 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NoticiasActivity extends AppCompatActivity {
 
+    NewsAdapter mAdapter;
+    NewsInterface mNewsInterface;
+
+    RecyclerView recyclerView;
+    LinearLayoutManager layout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_noticias);
+
+        layout = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView = findViewById(R.id.recyclerView);
+
+        recyclerView.setLayoutManager(layout);
 
         getNewsSources();
     }
@@ -38,9 +53,9 @@ public class NoticiasActivity extends AppCompatActivity {
                 .build();
 
         //call interface
-        NewsInterface newsInterface = retrofit.create(NewsInterface.class);
+        mNewsInterface = retrofit.create(NewsInterface.class);
 
-        Call<NewsParent> call = newsInterface.getJsonData();
+        Call<NewsParent> call = mNewsInterface.getJsonData();
 
         //Ejecutar
         call.enqueue(new Callback<NewsParent>() {
@@ -54,8 +69,10 @@ public class NoticiasActivity extends AppCompatActivity {
 
                 Log.e("data ", "" + response.body().getSources());
 
-                 List<News> news= response.body().getSources();
+                List<News> news= response.body().getSources();
 
+                mAdapter = new NewsAdapter(news, getApplicationContext());//Creo el adapter con los datos requeridos
+                recyclerView.setAdapter(mAdapter);
 
                 for(News noticias: news)
                 {
