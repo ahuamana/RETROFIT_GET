@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import com.paparazziteam.retrofitget.R;
 import com.paparazziteam.retrofitget.adapters.NewsAdapter;
+import com.paparazziteam.retrofitget.databinding.ActivityNoticiasBinding;
 import com.paparazziteam.retrofitget.interfaces.NewsInterface;
 import com.paparazziteam.retrofitget.model.News;
 import com.paparazziteam.retrofitget.model.NewsParent;
@@ -30,15 +31,24 @@ public class NoticiasActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     LinearLayoutManager layout;
 
+    //ViewBinding activity_noticias --> ActivityNoticiasBinding
+    private ActivityNoticiasBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_noticias);
+
+        //binding
+        binding = ActivityNoticiasBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        //fin binding
+
 
         layout = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView = findViewById(R.id.recyclerView);
 
-        recyclerView.setLayoutManager(layout);
+        binding.recyclerView.setLayoutManager(layout);
+
 
         getNewsSources();
     }
