@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                      content += "userId:" + posts.getUserId() + "\n";
                      content += "id:" + posts.getId() + "\n";
                      content += "title:" + posts.getTitle() + "\n";
-                     content += "body:" + posts.getBody() + "\n";
+                     content += "body:" + posts.getBody() + "\n\n";
                      mJsonTextView.append(content);
                  }
 
