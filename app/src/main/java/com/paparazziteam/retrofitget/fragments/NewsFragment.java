@@ -59,6 +59,7 @@ public class NewsFragment extends Fragment {
         //call interface
         NewsInterface newsInterface = retrofit.create(NewsInterface.class);
 
+        //Change binding
 
 
     }
