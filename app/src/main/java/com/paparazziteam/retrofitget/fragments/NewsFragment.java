@@ -37,6 +37,7 @@ public class NewsFragment extends Fragment {
     LinearLayoutManager layout;
 
 
+
     public NewsFragment() {
         // Required empty public constructor
     }
