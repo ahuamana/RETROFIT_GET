@@ -51,13 +51,7 @@ public class NewsFragment extends Fragment {
 
     private void getNewsSources() {
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://api.mediastack.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-        //call interface
-        NewsInterface newsInterface = retrofit.create(NewsInterface.class);
 
 
 
