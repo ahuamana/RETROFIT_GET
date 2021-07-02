@@ -102,4 +102,6 @@ public class NoticiasActivity extends AppCompatActivity {
 
 
     }
+
+
 }
