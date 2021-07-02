@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.paparazziteam.retrofitget.R;
 import com.paparazziteam.retrofitget.adapters.NewsAdapter;
+import com.paparazziteam.retrofitget.databinding.FragmentNewsBinding;
 import com.paparazziteam.retrofitget.interfaces.NewsInterface;
 import com.paparazziteam.retrofitget.model.News;
 import com.paparazziteam.retrofitget.model.NewsParent;
@@ -42,7 +43,8 @@ public class NewsFragment extends Fragment {
     RecyclerView recyclerView;
     LinearLayoutManager layout;
 
-
+    //FragmentNewsBinding --> NewsFragment
+    private FragmentNewsBinding binding;
 
     public NewsFragment() {
         // Required empty public constructor
@@ -59,15 +61,15 @@ public class NewsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-       View view = inflater.inflate(R.layout.fragment_news, container, false);
+        binding = FragmentNewsBinding.inflate(inflater, container, false);
 
         layout = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(layout);
+        //recyclerView = binding.findViewById(R.id.recyclerView);
+        binding.recyclerView.setLayoutManager(layout);
 
-       getNewsSources();
+        getNewsSources();
 
-       return view;
+       return binding.getRoot();
     }
 
     private void getNewsSources() {
@@ -99,7 +101,7 @@ public class NewsFragment extends Fragment {
                 List<News> news= response.body().getSources(); // guarda todos los objetos en la clase
 
                 mAdapter = new NewsAdapter(news, getContext());//Creo el adapter con los datos requeridos
-                recyclerView.setAdapter(mAdapter);
+                binding.recyclerView.setAdapter(mAdapter);
 
 
             }
