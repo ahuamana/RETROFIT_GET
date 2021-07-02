@@ -30,31 +30,23 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
 public class NewsFragment extends Fragment {
 
     private NoticiasViewModel noticiasViewModel;
-
     String data = "http://api.mediastack.com/v1/news?access_key=2a6960abe7dc05eaf9f2ca28738cab10&sources=cnn,bbc";
-
-    NewsAdapter mAdapter;
-    NewsInterface mNewsInterface;
-
-    RecyclerView recyclerView;
     LinearLayoutManager layout;
 
     //FragmentNewsBinding --> NewsFragment
     private FragmentNewsBinding binding;
+    private NoticiasViewModel viewModel = new NoticiasViewModel();
 
     public NewsFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -66,56 +58,9 @@ public class NewsFragment extends Fragment {
         layout = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         //recyclerView = binding.findViewById(R.id.recyclerView);
         binding.recyclerView.setLayoutManager(layout);
-
-        getNewsSources();
+        viewModel.getNewsSources(binding,getContext());
 
        return binding.getRoot();
-    }
-
-    private void getNewsSources() {
-
-        Log.e("Codigo ", "inicial");
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://api.mediastack.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        //call interface
-        mNewsInterface = retrofit.create(NewsInterface.class);
-
-        Call<NewsParent> call = mNewsInterface.getJsonData();
-
-        //Ejecutar
-        call.enqueue(new Callback<NewsParent>() {
-            @Override
-            public void onResponse(Call<NewsParent> call, Response<NewsParent> response) {
-                if(!response.isSuccessful())
-                {
-                    Log.e("Codigo ", "" +response.code());
-                    return;
-                }
-
-                Log.e("data ", "" + response.body().getSources());
-
-                List<News> news= response.body().getSources(); // guarda todos los objetos en la clase
-
-                mAdapter = new NewsAdapter(news, getContext());//Creo el adapter con los datos requeridos
-                binding.recyclerView.setAdapter(mAdapter);
-
-
-            }
-
-            @Override
-            public void onFailure(Call<NewsParent> call, Throwable t) {
-
-                Log.e("Error ", "" +t.getMessage());
-            }
-        });
-
-        //Change binding
-
-
     }
 
     @Override
@@ -125,4 +70,5 @@ public class NewsFragment extends Fragment {
         noticiasViewModel = ViewModelProviders.of(this).get(NoticiasViewModel.class);
         //Everthing to implement here
     }
+
 }
