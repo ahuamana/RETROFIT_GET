@@ -3,6 +3,8 @@ package com.paparazziteam.retrofitget.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.paparazziteam.retrofitget.R;
+import com.paparazziteam.retrofitget.adapters.NewsAdapter;
 import com.paparazziteam.retrofitget.interfaces.NewsInterface;
 import com.paparazziteam.retrofitget.model.News;
+import com.paparazziteam.retrofitget.model.NewsParent;
 
 import java.util.List;
 
@@ -25,6 +29,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NewsFragment extends Fragment {
 
     String data = "http://api.mediastack.com/v1/news?access_key=2a6960abe7dc05eaf9f2ca28738cab10&sources=cnn,bbc";
+
+    NewsAdapter mAdapter;
+    NewsInterface mNewsInterface;
+
+    RecyclerView recyclerView;
+    LinearLayoutManager layout;
+
+
 
     public NewsFragment() {
         // Required empty public constructor
@@ -43,6 +55,9 @@ public class NewsFragment extends Fragment {
         // Inflate the layout for this fragment
        View view = inflater.inflate(R.layout.fragment_news, container, false);
 
+        layout = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(layout);
 
        getNewsSources();
 
@@ -51,13 +66,44 @@ public class NewsFragment extends Fragment {
 
     private void getNewsSources() {
 
+        Log.e("Codigo ", "inicial");
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://api.mediastack.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         //call interface
-        NewsInterface newsInterface = retrofit.create(NewsInterface.class);
+        mNewsInterface = retrofit.create(NewsInterface.class);
+
+        Call<NewsParent> call = mNewsInterface.getJsonData();
+
+        //Ejecutar
+        call.enqueue(new Callback<NewsParent>() {
+            @Override
+            public void onResponse(Call<NewsParent> call, Response<NewsParent> response) {
+                if(!response.isSuccessful())
+                {
+                    Log.e("Codigo ", "" +response.code());
+                    return;
+                }
+
+                Log.e("data ", "" + response.body().getSources());
+
+                List<News> news= response.body().getSources(); // guarda todos los objetos en la clase
+
+                mAdapter = new NewsAdapter(news, getContext());//Creo el adapter con los datos requeridos
+                recyclerView.setAdapter(mAdapter);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<NewsParent> call, Throwable t) {
+
+                Log.e("Error ", "" +t.getMessage());
+            }
+        });
 
         //Change binding
 
