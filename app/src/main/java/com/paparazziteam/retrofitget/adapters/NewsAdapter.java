@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.paparazziteam.retrofitget.R;
+import com.paparazziteam.retrofitget.databinding.CardviewNewsBinding;
 import com.paparazziteam.retrofitget.model.News;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class NewsAdapter  extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     List<News> mNewsModel;
     Context context;
+    private CardviewNewsBinding cardviewNewsBinding;
 
     public NewsAdapter(List<News> news, Context context)
     {
@@ -31,9 +33,8 @@ public class NewsAdapter  extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_news, parent, false);
-
-        return new ViewHolder(view);
+        cardviewNewsBinding = CardviewNewsBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
+        return new ViewHolder(cardviewNewsBinding);
     }
 
     @Override
@@ -66,12 +67,12 @@ public class NewsAdapter  extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         Button btnprueba;
         RoundedImageView roundedImageView;
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
+        public ViewHolder(@NonNull CardviewNewsBinding cardviewNewsBinding) {
+            super(cardviewNewsBinding.getRoot());
 
-            txttitulo = itemView.findViewById(R.id.txtTitulo);
-            btnprueba = itemView.findViewById(R.id.btnPrueba);
-            roundedImageView = itemView.findViewById(R.id.roundedImageView);
+            txttitulo = cardviewNewsBinding.txtTitulo;
+            btnprueba = cardviewNewsBinding.btnPrueba;
+            roundedImageView = cardviewNewsBinding.roundedImageView;
 
 
 
